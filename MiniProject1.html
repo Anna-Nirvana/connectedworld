@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title> Viz Tech October 2020, Mini Project 1 </title>
+        <link rel = "stylesheet" href= "style.css">
+        <link rel = "stylesheet" href = "https://fonts.googleapis.com/css?family=Open+Sans">
+    </head>
+    <body>
+        <section class="header">
+            <h1>
+                An
+                <br>
+                Increasingly
+                <br>
+                Connected
+                <br>
+                World
+            </h1>
+            <h3>
+                Anna Campbell
+                <br>
+                Visualization Technologies I
+                <br>
+                Fall 2020
+                <br>
+                <div>
+                    * * * 
+                </div>
+            </h3>
+        </section>
+
+        <img src = "gfx/catch.gif" class="catch">
+
+        <article>
+            <section id="introduction">
+                <p> Can a series of spreadsheets tell us a story about our newly interconnected world, and each country's unique place in the growing network of digital communication? </p>
+
+                <p> This project explores data from the <a href = "https://databank.worldbank.org/source/world-development-indicators#"> World Bank </a> and the <a href="https://www.gapminder.org/data/"> Gapminder Institute, </a>  which was collected as part of the World Development Indicators initiative from the International Telecommunication Union (ITU) World Telecommunication/ICT Indicators Database. The charts below were created in <a href = "https://rstudio.com/"> RStudio </a> with <a href="https://ggplot2.tidyverse.org/"> ggplot2 </a> and <a href="https://gganimate.com/"> gganimate,</a> and display information about <b> communications connectivity per country, </b> as evidenced by certain proxies. </p>
+
+                <p> The main dataset we'll use contains the number of cell phone subscriptions per country as counted per 100 people in that country's population; this dataset contains values for each year between 2001 and 2019. At the end, we'll also tinker a bit with data that shows the total number of cell subscriptions (agnostic to population) and number of secure internet servers around the world.</p>
+            </section>
+
+            <section id="part1" class="vis-explain">
+                <h2>
+                    A Scatterplot in Small Multiples
+                </h2>
+
+                <p> Let's start with the basics. A scatterplot representing the growth of cell phone subscriptions in each country would be an easy way to see the growth in connectivity at a glance. But it's difficult to visualize almost 20 years of data for 214 countries in the same chart. Using the "small multiples" concept, achieved using the handy R property "facet_wrap", we can instead examine these growth rates as grouped by continent. Aided by color coding, this graphic is easier to digest. Each scatterplot below represents a timeline of the growth in cell connections over the past two decades. </p>
+
+                <img src = "gfx/smallmultiples-scatterplot.jpg" width = 600>
+
+                <p> Some interesting patterns emerge right away. For instance, there seems to be a large disparity in Asian citizens' access to, or interest in, cell phone subscriptions; both the highest and lowest rates of growth appear to be part of this continent. North America also had a large disparity in the mid-2000s, which seems to have somewhat evened out since. Oceania's numbers have stayed low, likely due to the lack of cell infrastructure on remote Pacific islands. It will be interesting to see if this number grows with the advent of satellite based 4G cellular networks like <a href = "https://www.wired.com/story/your-phone-may-soon-receive-4g-service-from-space"> Lynk. </a>
+                </p>
+            </section>
+
+            <section id="part2" class="vis-explain">
+                <h2>
+                    Easy as ABC: <br> Animated Bubble Chart
+                </h2>
+
+                <p id="abc-explain"> The gif at the top of this page displays the subscription growth of every country in the database simultaneously. And it's fun to watch, if I do say so myself. But until it's interactive, it will be difficult to distinguish which bubble belongs to which country. Again making use of small multiples via "facet_wrap", we'll sort these by continent and see what trends we can find in growth speed.
+                </p>
+
+                <img src = "gfx/smallmultiples.gif" width = 500>
+
+                <p> It's obvious from this graph that Europe started with the highest average overall connectivity back in the early 2000s. Perhaps because of that initial surplus, its growth seems to have stalled in the meantime. There are a few noticeable reversals in the growth trend over time, noteably in Asia and some parts of Africa. It would be interesting to investigate what other trends in these countries may be affecting this ratio, like population and economic growth. </p>
+            </section>
+
+            <section id="part3" class="vis-explain">
+                <h2>
+                    Experimenting with <a href = "https://www.edwardtufte.com/bboard/q-and-a-fetch-msg?msg_id=0003nk"> Tufte's Slope Chart </a>
+                </h2>
+
+                <p> Slope charts can show growth over time, and are especially handy when comparing different rates of growth, as we are interested in doing here. This chart shows the values at the beginning (2001) and end (2019) of our dataset as averaged for each continent. The steepness of the line reflects the rate of change since 2001. </p>
+
+                <img src = "gfx/Slope-3.jpg">
+
+                <p> Africa started with the least access to cell networks, but in the past two decades it surpassed Oceania. Now, there is on average one cell phone subscription for every person counted in Africa, while 25% of Oceanian residents do not have a cell subscription to their "name" as represented in the dataset.  </p>
+            </section>
+
+            <section id="part3" class="vis-explain">
+                <h2>
+                    Stacked Area Charts
+                </h2>
+
+                <p> My brilliant colleague Yuriko recommended a stacked area chart to show more nuanced information than the slope chart above. Using pivot tables and continent averages, I created some area charts using the geom_area function in ggplot2. This chart shows the same dataset we've been exploring so far: cell phone subscriptions per 100 people. </p>
+
+                <img src = "gfx/StackedArea-Cell-per-100.jpg">
+
+                <p> This chart shows a similar dataset, but without respect to population; the proportions here represent the total number of cellular subscriptions per country, regardless of its size. </p>
+
+                <img src = "gfx/StackedArea-Cell-TOTAL.jpg">
+
+                <p> When compared with the chart prior, it seems that Asia's cell phone subscription numbers are much more similar to the rest of the world when you consider its vast population. </p>
+                    
+                <p> Cell phones aren't the only indicator of digital connectivity. The Gapminder data also included statistics on secure internet servers in different locations around the world, shown below. This dataset is also relative to population. </p>
+
+                <img src = "gfx/StackedArea-Servers-per-mil.jpg">
+
+                <p> However, this type of plot can be confusing at a glance, since it appears that Africa has the highest number of cell subscriptions per capita, when the chart is simply showing the proportion of each continent's cell phone subscribers to the whole. This is a <a href = "https://leancrew.com/all-this/2011/11/i-hate-stacked-area-charts/"> known issue </a> with stacked area charts, which is too bad, because they're very aesthetically pleasing.</p>
+                
+                <p> Let's try another version which makes the comparison a little more obvious.  </p>
+            </section>
+
+            <section id ="part4" class="vis-explain">
+            <h2> 
+                Proportional Stacked Area Charts
+            </h2>
+
+            <p> In my opinion, proportional stacked area charts are a better version of the area chart. Seeing at a glance that the y axis's maximum is 1 is a better immediate indication to the eye that we're dealing with proportions of a whole. </p>
+
+            <p> Here's our familiar phones-per-hundred data in the form of a proportional stacked area chart. Asia and Europe look much more on par here, where growth speed is not as obvious. </p>
+
+            <img src = "gfx/PSAC-CELLS-100.jpg">
+
+            <p> And here are the cell phones - total: </p>
+
+            <img src = "gfx/PSAC-CELLS-TOTAL.jpg">
+
+            <p> South America's proportional total seems relatively steady, but its raw total looks as though it's dropping off; could this mean economic growth is catching up with population growth there? </p>
+
+            <p> Finally, here are the internet servers: </p>
+
+            <img src = "gfx/PSAC-INTERNET-SERVERS.jpg">
+
+            <p> It's interesting to note that Africa has had a steady proportion of the world's cell phone access, but in recent years seemed to surge in internet servers. Asia looks like it experienced a similar surge around 2016. Note that this data begins in 2011, so we should be careful comparing its shape to the previous charts. </p>
+        </section>
+
+            <section id="conclusion" class="vis-explain">
+            <h2>
+                Bonus: A World Map
+            </h2>
+            
+            <p> This map was created using <a href = "https://app.flourish.studio"> Flourish's data visualization service. </a> Since 2018 is the most recent year for which there is somewhat complete data, that's what's been plotted here. Mouse over the countries to see what their cellular subscription numbers were like in 2018. Did you know that Thailand, Saudi Arabia, and South Africa all have more cell phones per capita than the U.S.?
+                </p>
+            </section>
+        </article>
+
+        <div class="flourish-embed flourish-map" data-src="visualisation/4030156"><script src="https://public.flourish.studio/resources/embed.js"></script></div>
+
+        <section id="fineprint">
+            <h4> <i> The fine print </i> </h4>
+                <p>Mobile subscriptions include both analogue and digital cellular systems (IMT-2000 (Third Generation, 3G) and 4G subscriptions, but excludes mobile broadband subscriptions via data cards or USB modems. Subscriptions to public mobile data services, private trunked mobile radio, telepoint or radio paging, and telemetry services are also excluded, but all mobile cellular subscriptions that offer voice communications are included. Both postpaid and prepaid subscriptions are included.
+
+                Servers per million people is the number of distinct, publicly-trusted TLS/SSL certificates found in the <a href = "https://news.netcraft.com/archives/category/web-server-survey/"> Netcraft Secure Server Survey. </a>
+                </p>
+
+        </section>
+    </body>
+</html>
